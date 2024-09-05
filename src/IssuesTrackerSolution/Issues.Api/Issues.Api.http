@@ -1,0 +1,72 @@
+@Issues.Api_HostAddress = http://localhost:1337
+@Api_HostAddress = http://localhost:1337
+
+@BobToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImJvYkBjb21wYW55LmNvbSIsInN1YiI6ImJvYkBjb21wYW55LmNvbSIsImp0aSI6IjM5NTNiZGU0IiwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDoxMzM3IiwibmJmIjoxNzI1NDcyODU4LCJleHAiOjE3MzMzMzUyNTgsImlhdCI6MTcyNTQ3Mjg1OSwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.6MESOv93o1Gm6fR7BdJ4833YFVbYT2PhhtKmTYsCzpI
+@SueToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6InN1ZUBjb21wYW55LmNvbSIsInN1YiI6InN1ZUBjb21wYW55LmNvbSIsImp0aSI6ImI3NGM0OTA2Iiwicm9sZSI6WyJTb2Z0d2FyZUNlbnRlciIsIlNvZnR3YXJlQ2VudGVyQWRtaW4iXSwiYXVkIjoiaHR0cDovL2xvY2FsaG9zdDoxMzM3IiwibmJmIjoxNzI1NTUwNzkwLCJleHAiOjE3MzM0MTMxOTAsImlhdCI6MTcyNTU1MDc5MSwiaXNzIjoiZG90bmV0LXVzZXItand0cyJ9.NjE5idV8FNS6f-sh8EJY3WoJ_ZHiP0uF4aYjr21eHFU
+
+@bradToken = Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImJyYWRAY29tcGFueS5jb20iLCJzdWIiOiJicmFkQGNvbXBhbnkuY29tIiwianRpIjoiM2Q5MTY1OTIiLCJyb2xlIjoiU29mdHdhcmVDZW50ZXIiLCJhdWQiOiJodHRwOi8vbG9jYWxob3N0OjEzMzciLCJuYmYiOjE3MjU0NzI4OTMsImV4cCI6MTczMzMzNTI5MywiaWF0IjoxNzI1NDcyODk0LCJpc3MiOiJkb3RuZXQtdXNlci1qd3RzIn0.aSsa5MEKqqebfSey_R4gqWM9amSibmfTeEpM4Vdy794 
+POST {{Api_HostAddress}}/catalog/microsoft/software
+Content-Type: application/json
+
+{
+  "name": "Some Name",
+  "description": "Some Description"
+  
+}
+###
+# MAke a get request to vendors with an authorized user (Employee)
+
+GET {{Api_HostAddress}}/vendors
+Authorization: {{BobToken}}
+
+
+###
+# Should get a 401 without a valid token
+GET {{Api_HostAddress}}/vendors
+
+
+### Catalog
+
+# Adding an item without a token gives a 401
+POST {{Api_HostAddress}}/vendors
+Content-Type: application/json
+
+{
+  "name": "Oracle"
+}
+
+### 
+# You have to be a software center admin 403
+
+POST {{Api_HostAddress}}/vendors
+Content-Type: application/json
+Authorization: {{BobToken}}
+
+{
+  "name": "Oracle"
+}
+
+
+### You can do this if you are software center admin
+
+POST {{Api_HostAddress}}/vendors
+Content-Type: application/json
+Authorization: {{SueToken}}
+
+{
+  "name": "Oracle"
+}
+
+###
+
+GET {{Api_HostAddress}}/hr/software-catalog
+
+
+### 
+
+POST {{Api_HostAddress}}/vendors/microsoft/software/word/issues
+Content-Type: application/json
+
+{
+  "description": "spelchek doedn't werk"
+}
